@@ -1,36 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import YouTube from "react-youtube";
 
+const opts = {
+  height: "390",
+  width: "640",
+  playerVars: { autoplay: 1 },
+};
+const vId = "W5Pr482QWws";
+const key = "AIzaSyAEbj6kZ71j_C1-LHWDO_Gll08Y_8mrePM";
+const channelId = "UCAIahQoZC1hpzzb0-Uy1whw";
+const result = 10;
+const le = `https://www.googleapis.com/youtube/v3/search?key${key}&channelId${channelId}&part=snippet,id&order=date&maxResults=${result}`;
+console.log(le);
 const Join = ({ history }) => {
-  const [name, setName] = useState("");
-  const [error, setError] = useState("");
+  const [id, setId] = useState(vId);
 
-  const onchangeName = (e) => {
-    setName(e.target.value.trim());
-  };
+  const onReady = (event) => event.target.pauseVideo();
 
-  const handleEnterRoom = (room) => {
-    console.log(name);
-    if (!name) {
-      return setError("Name is required");
-    }
-
-    history.push(`/chat?username=${name}&boothName=${room}`);
-  };
-
-  return (
-    <div>
-      <h2>Welcome, please input ur name and click any Booth to Join</h2>
-      <p style={{ color: "red" }}>{error}</p>
-      <label>Name</label>{" "}
-      <input placeholder="Login as fake user" type="text" value={name} onChange={onchangeName} />
-      <hr />
-      <button onClick={() => handleEnterRoom("Booth1")}>Booth1</button>
-      <hr />
-      <button onClick={() => handleEnterRoom("Booth2")}>Booth2</button>
-      <hr />
-      <button onClick={() => handleEnterRoom("Booth3")}>Booth3</button>
-    </div>
-  );
+  return <YouTube videoId={id} opts={opts} onReady={onReady} />;
 };
 
 export default Join;
